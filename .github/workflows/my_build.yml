@@ -1,0 +1,29 @@
+name: Build Ghostgram IPA
+on:
+  workflow_dispatch: # Это добавит кнопку ручного запуска
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build IPA
+        run: |
+          mkdir -p build-input
+          python3 build-system/Make/Make.py \
+            --cacheDir="$HOME/telegram-bazel-cache" \
+            build \
+            --configurationPath=build-system/appstore-configuration.json \
+            --buildNumber=100 \
+            --overrideXcodeVersion \
+            --disableProvisioningProfiles
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ghostgram-IPA
+          path: build/artifacts/*.ipa
