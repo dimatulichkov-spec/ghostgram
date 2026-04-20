@@ -40,8 +40,12 @@ jobs:
 
       - name: Build IPA
         run: |
+          # Устанавливаем Bazelisk, чтобы не зависеть от кривых ссылок в скрипте
+          brew install bazelisk
+
           python3 build-system/Make/Make.py \
             --overrideXcodeVersion \
+            --bazel $(which bazelisk) \
             --cacheDir="$HOME/telegram-bazel-cache" \
             build \
             --configurationPath=build-system/appstore-configuration.json \
