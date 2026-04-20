@@ -41,13 +41,13 @@ jobs:
       - name: Build IPA
         run: |
           python3 build-system/Make/Make.py \
+            --overrideXcodeVersion \
             --cacheDir="$HOME/telegram-bazel-cache" \
             build \
             --configurationPath=build-system/appstore-configuration.json \
             --buildNumber=100 \
             --configuration release_arm64 \
-            --xcodeManagedCodesigning \
-            --overrideXcodeVersion
+            --xcodeManagedCodesigning
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
